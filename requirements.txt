@@ -1,0 +1,12 @@
+diffusers
+librosa
+soundfile
+einops
+transformers
+tiktoken
+inflect
+lingua-language-detector
+WeTextProcessing
+pydub
+zhon
+ffmpeg-python

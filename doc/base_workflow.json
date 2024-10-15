@@ -1,0 +1,181 @@
+{
+  "last_node_id": 4,
+  "last_link_id": 3,
+  "nodes": [
+    {
+      "id": 3,
+      "type": "LoadAudio",
+      "pos": {
+        "0": 94,
+        "1": 383
+      },
+      "size": {
+        "0": 315,
+        "1": 124
+      },
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "test_zh_1_ref_short.wav",
+        null,
+        ""
+      ]
+    },
+    {
+      "id": 2,
+      "type": "PromptTextNode",
+      "pos": {
+        "0": 26,
+        "1": 73
+      },
+      "size": {
+        "0": 400,
+        "1": 200
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "TEXT",
+          "type": "TEXT",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PromptTextNode"
+      },
+      "widgets_values": [
+        "《三体》是刘慈欣创作的长篇科幻小说系列，由《三体》《三体2：黑暗森林》《三体3：死神永生》组成，第一部于2006年5月起在《科幻世界》杂志上连载，第二部于2008年5月首次出版，第三部则于2010年11月出版。\n作品讲述了地球人类文明和三体文明的信息交流、生死搏杀及两个文明在宇宙中的兴衰历程。其第一部经过刘宇昆翻译后获得了第73届雨果奖最佳长篇小说奖，第三部英文版获得2017年轨迹奖最佳长篇科幻小说奖。2019年，列入“新中国70年70部长篇小说典藏”。2022年9月，《三体》入选2021十大年度国家IP。"
+      ]
+    },
+    {
+      "id": 1,
+      "type": "FireRedTTSNode",
+      "pos": {
+        "0": 504,
+        "1": 86
+      },
+      "size": {
+        "0": 309.60003662109375,
+        "1": 210.80001831054688
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "TEXT",
+          "link": 1
+        },
+        {
+          "name": "prompt_wav",
+          "type": "AUDIO",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            3
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FireRedTTSNode"
+      },
+      "widgets_values": [
+        true,
+        "but,however,nevertheless,yet,still,therefore,thus,hence,consequently,moreover,furthermore,additionally,meanwhile,alternatively,otherwise,namely,specifically,for example,such as,in fact,indeed,notably,in contrast,on the other hand,conversely,in conclusion,to summarize,finally"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "PreviewAudio",
+      "pos": {
+        "0": 865,
+        "1": 93
+      },
+      "size": {
+        "0": 315,
+        "1": 76
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 3
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewAudio"
+      },
+      "widgets_values": [
+        null
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      1,
+      0,
+      "TEXT"
+    ],
+    [
+      2,
+      3,
+      0,
+      1,
+      1,
+      "AUDIO"
+    ],
+    [
+      3,
+      1,
+      0,
+      4,
+      0,
+      "AUDIO"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 1,
+      "offset": [
+        0,
+        0
+      ]
+    }
+  },
+  "version": 0.4
+}
