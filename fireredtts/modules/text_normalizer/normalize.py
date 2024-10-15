@@ -5,8 +5,11 @@ import unicodedata
 from lingua import Language, LanguageDetectorBuilder
 from builtins import str as unicode
 
-from tn.chinese.normalizer import Normalizer as ZhNormalizer
-from tn.english.normalizer import Normalizer as EnNormalizer
+try:
+    from tn.chinese.normalizer import Normalizer as ZhNormalizer
+    from tn.english.normalizer import Normalizer as EnNormalizer
+except:
+    print("window")
 
 from fireredtts.modules.text_normalizer.regex_common import *
 from fireredtts.modules.text_normalizer.utils import *
@@ -114,8 +117,11 @@ class TextNormalizer:
         self.language_detector = LanguageDetectorBuilder.from_languages(
             Language.ENGLISH, Language.CHINESE
         ).build()
-        self.zh_normalizer = ZhNormalizer()
-        self.en_normalizer = EnNormalizer()
+        try:
+            self.zh_normalizer = ZhNormalizer()
+            self.en_normalizer = EnNormalizer()
+        except:
+            pass
         self.inflect_parser = inflect.engine()
         self.lang2token = {Language.ENGLISH: "en", Language.CHINESE: "zh"}
 
@@ -133,12 +139,18 @@ class TextNormalizer:
             language = Language.CHINESE
 
         if language == Language.CHINESE:
-            text = self.zh_normalizer.normalize(text)
+            try:
+                text = self.zh_normalizer.normalize(text)
+            except:
+                pass
             text = text.replace("\n", "")
             text = re.sub(r"[，,]+$", "。", text)
         else:
             text = re.sub(r"[^ 0-9A-Za-z\[\]'.,:?!_\-]", "", text)
-            text = self.en_normalizer.normalize(text)
+            try:
+                text = self.en_normalizer.normalize(text)
+            except:
+                pass
             # fallback number normalization
             pieces = re.split(r"(\d+)", text)
             text = "".join(

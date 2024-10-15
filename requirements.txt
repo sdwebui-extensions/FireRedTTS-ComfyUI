@@ -6,7 +6,9 @@ transformers
 tiktoken
 inflect
 lingua-language-detector
-WeTextProcessing
+WeTextProcessing;sys_platform!="win32"
 pydub
 zhon
 ffmpeg-python
+LangSegment
+numpy==1.26.4
