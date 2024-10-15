@@ -18,6 +18,10 @@ from pydub.silence import split_on_silence
 from huggingface_hub import snapshot_download
 from fireredtts.fireredtts import FireRedTTS
 from zhon.hanzi import punctuation
+from zh_normalization import text_normalize
+from LangSegment import LangSegment
+LangSegment.setfilters(["zh", "en"])
+
 SPLIT_WORDS = [
     "but", "however", "nevertheless", "yet", "still",
     "therefore", "thus", "hence", "consequently",
@@ -122,13 +126,18 @@ class FireRedTTSNode:
             global SPLIT_WORDS
             SPLIT_WORDS = custom_words
         gen_text_batches = split_text_into_batches(text, max_chars=max_chars)
+        gen_text_batches = text_list_normalize(gen_text_batches)
         comfy_par = ProgressBar(len(gen_text_batches))
         tts = FireRedTTS(config_path=osp.join(now_dir,"config_24k.json"),
                          pretrained_path=fireredtss_dir,device=device)
         rec_wavs_list = []
         for i,i_text in enumerate(tqdm(gen_text_batches,total=len(gen_text_batches),desc="TTS ...")):
+            '''
             for dot in punctuation:
                 i_text = i_text.replace(dot,"")
+            '''
+            if i_text[-1] not in ['。', '.', '!', '！', '?', '？']:
+                i_text += '.'
             print(f"sentence {i+1}, synthesize text:{i_text}")
             rec_wavs = tts.synthesize(prompt_wav=prompt_wav,text=i_text)
             rec_wavs = rec_wavs.detach().cpu().numpy()
@@ -149,6 +158,25 @@ class FireRedTTSNode:
         }
         shutil.rmtree(tmp_dir)
         return (res_audio, )
+
+def text_list_normalize(texts):
+    text_list = []
+    for text in texts:
+        for tmp in LangSegment.getTexts(text):
+            normalize = text_normalize(tmp.get("text"))
+            if normalize != "" and tmp.get("lang") == "en" and normalize not in ["."]:
+                if len(text_list) > 0:
+                    text_list[-1] += normalize
+                else:
+                    text_list.append(normalize)
+            elif tmp.get("lang") == "zh":
+                text_list.append(normalize)
+            else:
+                if len(text_list) > 0:
+                    text_list[-1] += tmp.get("text")
+                else:
+                    text_list.append(tmp.get("text"))
+    return text_list
 
 def split_text_into_batches(text, max_chars=200, split_words=SPLIT_WORDS):
     if len(text.encode('utf-8')) <= max_chars:
