@@ -1,38 +1,34 @@
 {
-  "last_node_id": 4,
-  "last_link_id": 3,
+  "last_node_id": 6,
+  "last_link_id": 9,
   "nodes": [
     {
-      "id": 3,
-      "type": "LoadAudio",
+      "id": 4,
+      "type": "PreviewAudio",
       "pos": {
-        "0": 94,
-        "1": 383
+        "0": 955,
+        "1": 93
       },
       "size": {
         "0": 315,
-        "1": 124
+        "1": 76
       },
       "flags": {},
-      "order": 0,
+      "order": 3,
       "mode": 0,
-      "inputs": [],
-      "outputs": [
+      "inputs": [
         {
-          "name": "AUDIO",
+          "name": "audio",
           "type": "AUDIO",
-          "links": [
-            2
-          ]
+          "link": 9
         }
       ],
+      "outputs": [],
       "properties": {
-        "Node name for S&R": "LoadAudio"
+        "Node name for S&R": "PreviewAudio"
       },
       "widgets_values": [
-        "test_zh_1_ref_short.wav",
-        null,
-        ""
+        null
       ]
     },
     {
@@ -47,7 +43,7 @@
         "1": 200
       },
       "flags": {},
-      "order": 1,
+      "order": 0,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -55,8 +51,9 @@
           "name": "TEXT",
           "type": "TEXT",
           "links": [
-            1
-          ]
+            7
+          ],
+          "slot_index": 0
         }
       ],
       "properties": {
@@ -67,15 +64,49 @@
       ]
     },
     {
-      "id": 1,
-      "type": "FireRedTTSNode",
+      "id": 3,
+      "type": "LoadAudio",
       "pos": {
-        "0": 504,
-        "1": 86
+        "0": 94,
+        "1": 383
       },
       "size": {
-        "0": 309.60003662109375,
-        "1": 210.80001831054688
+        "0": 315,
+        "1": 124
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            8
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "test_zh_1_ref_short.wav",
+        null,
+        ""
+      ]
+    },
+    {
+      "id": 6,
+      "type": "FireRedTTSNode",
+      "pos": {
+        "0": 497,
+        "1": 123
+      },
+      "size": {
+        "0": 400,
+        "1": 200
       },
       "flags": {},
       "order": 2,
@@ -84,12 +115,12 @@
         {
           "name": "text",
           "type": "TEXT",
-          "link": 1
+          "link": 7
         },
         {
           "name": "prompt_wav",
           "type": "AUDIO",
-          "link": 2
+          "link": 8
         }
       ],
       "outputs": [
@@ -97,7 +128,7 @@
           "name": "AUDIO",
           "type": "AUDIO",
           "links": [
-            3
+            9
           ],
           "slot_index": 0
         }
@@ -107,59 +138,31 @@
       },
       "widgets_values": [
         true,
+        1,
         "but,however,nevertheless,yet,still,therefore,thus,hence,consequently,moreover,furthermore,additionally,meanwhile,alternatively,otherwise,namely,specifically,for example,such as,in fact,indeed,notably,in contrast,on the other hand,conversely,in conclusion,to summarize,finally"
-      ]
-    },
-    {
-      "id": 4,
-      "type": "PreviewAudio",
-      "pos": {
-        "0": 865,
-        "1": 93
-      },
-      "size": {
-        "0": 315,
-        "1": 76
-      },
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "link": 3
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "Node name for S&R": "PreviewAudio"
-      },
-      "widgets_values": [
-        null
       ]
     }
   ],
   "links": [
     [
-      1,
+      7,
       2,
       0,
-      1,
+      6,
       0,
       "TEXT"
     ],
     [
-      2,
+      8,
       3,
       0,
-      1,
+      6,
       1,
       "AUDIO"
     ],
     [
-      3,
-      1,
+      9,
+      6,
       0,
       4,
       0,
