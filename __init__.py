@@ -117,7 +117,10 @@ class FireRedTTSNode:
             prompt_wav = f.name
         # Split the input text into batches
         
-        max_chars = 200
+        if len(text.encode('utf-8')) == len(text):
+            max_chars = 400-len(text.encode('utf-8'))
+        else:
+            max_chars = 300-len(text.encode('utf-8'))
         
         if not split_words.strip():
             custom_words = [word.strip() for word in split_words.split(',')]
