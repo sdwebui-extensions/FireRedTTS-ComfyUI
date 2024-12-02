@@ -39,6 +39,9 @@ device = (
 )
 aifsh_models = osp.join(folder_paths.models_dir,"AIFSH")
 fireredtss_dir = osp.join(aifsh_models,"FireRedTTS")
+cache_fireredtss_dir = "/stable-diffusion-cache/models/FireRedTTS"
+if osp.exists(cache_fireredtss_dir):
+    fireredtss_dir = cache_fireredtss_dir
 
 def speed_change(input_audio, speed, sr):
     # 检查输入数据类型和声道数
