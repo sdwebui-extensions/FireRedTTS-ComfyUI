@@ -5,22 +5,12 @@ sys.path.append(now_dir)
 tmp_dir = osp.join(now_dir, "tmp")
 import re
 import torch
-import ffmpeg
 import shutil
 import tempfile
-import torchaudio
 import folder_paths
 import numpy as np
 from tqdm import tqdm
 from comfy.utils import ProgressBar
-from pydub import AudioSegment
-from pydub.silence import split_on_silence
-from huggingface_hub import snapshot_download
-from fireredtts.fireredtts import FireRedTTS
-from zhon.hanzi import punctuation
-from zh_normalization import text_normalize
-from LangSegment import LangSegment
-LangSegment.setfilters(["zh", "en"])
 
 SPLIT_WORDS = [
     "but", "however", "nevertheless", "yet", "still",
@@ -44,6 +34,7 @@ if osp.exists(cache_fireredtss_dir):
     fireredtss_dir = cache_fireredtss_dir
 
 def speed_change(input_audio, speed, sr):
+    import ffmpeg
     # 检查输入数据类型和声道数
     if input_audio.dtype != np.int16:
         raise ValueError("输入音频数据类型必须为 np.int16")
@@ -72,6 +63,7 @@ def speed_change(input_audio, speed, sr):
 class FireRedTTSNode:
     def __init__(self):
         if not osp.exists(osp.join(fireredtss_dir,"fireredtts_gpt.pt")):
+            from huggingface_hub import snapshot_download
             snapshot_download(repo_id="fireredteam/FireRedTTS",local_dir=fireredtss_dir)
     @classmethod
     def INPUT_TYPES(s):
@@ -110,6 +102,8 @@ class FireRedTTSNode:
     CATEGORY = "AIFSH_FireRedTSS"
 
     def gen_audio(self,text,prompt_wav,remove_slience,speed,split_words):
+        from fireredtts.fireredtts import FireRedTTS
+        import torchaudio
         os.makedirs(tmp_dir, exist_ok=True)
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav",dir=tmp_dir) as f:
             waveform = prompt_wav["waveform"].squeeze(0)
@@ -164,6 +158,9 @@ class FireRedTTSNode:
         return (res_audio, )
 
 def text_list_normalize(texts):
+    from zh_normalization import text_normalize
+    from LangSegment import LangSegment
+    LangSegment.setfilters(["zh", "en"])
     text_list = []
     for text in texts:
         for tmp in LangSegment.getTexts(text):
@@ -285,6 +282,8 @@ def slice(audio_path):
     Args:
         audio_path (_type_): audio path
     """
+    from pydub.silence import split_on_silence
+    from pydub import AudioSegment
     try:
         audio = AudioSegment.from_file(audio_path)
     except:
